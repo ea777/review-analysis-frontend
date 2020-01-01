@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from django.core.paginator import Paginator
 from django.http import HttpResponse
 import pandas as pd
 from pandas import ExcelWriter
@@ -8,7 +9,6 @@ import numpy as np
 
 # Create your views here.
 def index(request):
-
     # read form excel as dataframe
     df = pd.read_excel('../bunsen_reviews.xls', sheet_name='Sheet1')
     # no need to display sentimental analysis and no.of reviews, so drop it
@@ -43,3 +43,10 @@ def index(request):
     # pass the list to template
 
     return render(request, 'index.html', {"response": Row_list})
+
+class PostListView():
+
+  template_name = 'index.html'
+  context_object_name = 'rows'
+  ordering = ['-date_posted']
+  paginate_by = 5
